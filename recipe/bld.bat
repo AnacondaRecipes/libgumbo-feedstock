@@ -1,5 +1,8 @@
+copy "%RECIPE_DIR%\CMakeLists.txt" "%SRC_DIR%\"
+
 mkdir build
 cd build
+
 cmake .. ^
 	-GNinja ^
 	-DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^

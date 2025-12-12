@@ -1,0 +1,52 @@
+{% set name = "libgumbo" %}
+{% set version = "1.0.0" %}
+  
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/google/gumbo-parser/archive/v{{ version }}.tar.gz
+  sha256: d44a18a149cbaa80c18a606d8dfd0ca777c2cb255c1da61fb7c388718fe2a6f0
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ stdlib("c") }}
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - make  # [unix]
+    - autoconf  # [unix]
+    - automake  # [unix]
+    - libtool  # [unix]
+    - cmake  # [win]
+    - ninja-base  # [win]
+  run_exports:
+    - {{ pin_subpackage('libgumbo', max_pin='x.x') }}
+
+test:
+  commands:
+    - test -f $PREFIX/include/gumbo.h              # [unix]
+    - test -f $PREFIX/lib/libgumbo${SHLIB_EXT}     # [unix]
+    - if not exist %LIBRARY_INC%\gumbo.h exit 1    # [win]
+    - if not exist %LIBRARY_BIN%\gumbo.dll exit 1  # [win]
+
+about:
+  home: https://github.com/google/gumbo-parser
+  license: Apache-2.0
+  license_family: APACHE
+  license_file: COPYING
+  summary: |
+    Gumbo is an implementation of the HTML5 parsing algorithm implemented
+    as a pure C99 library with no outside dependencies.
+  description: |
+    Gumbo is an implementation of the HTML5 parsing algorithm implemented
+    as a pure C99 library with no outside dependencies.
+  doc_url: https://github.com/google/gumbo-parser
+  dev_url: https://github.com/google/gumbo-parser
+
+extra:
+  recipe-maintainers:
+    - wolfv
